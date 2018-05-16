@@ -1,0 +1,10 @@
+const statusCodes = {
+  SUCCESS_OK_200: 200,
+  SUCCESS_NO_CONTENT_204: 204,
+  INTERNAL_SERVER_ERROR_500: 500,
+  BAD_REQUEST_400: 400,
+  UNAUTHORIZED_401: 401,
+  FORBIDDEN_403: 403,
+};
+
+module.exports = statusCodes;

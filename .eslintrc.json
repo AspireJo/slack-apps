@@ -1,0 +1,38 @@
+{
+  "extends": "airbnb-base",
+  "globals": {
+    "AppConfigs": true,
+    "Logger": true,
+    "Helper": true,
+    "Http": true,
+    "Errors": true,
+    "Environment": true,
+    "Validation": true,
+  },
+  "plugins": [
+    "import",
+    "node"
+  ],
+  "rules": {
+    "max-len": [
+      2,
+      {
+        "code": 180,
+        "ignoreUrls": true
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxBOF": 0,
+        "maxEOF": 1
+      }
+    ],
+    "no-restricted-properties": "off",
+    "class-methods-use-this": "off",
+    "comma-dangle": "off",
+    "object-curly-newline": "off",
+    "node/exports-style": ["error", "module.exports"]
+  }
+}
