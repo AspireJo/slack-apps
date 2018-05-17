@@ -1,5 +1,4 @@
 const Promise = require('bluebird');
-const auditRepo = require('../../core/repository/audit');
 
 /**
  * Base controller to all APIs

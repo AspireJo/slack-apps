@@ -12,13 +12,13 @@ if (!fs.existsSync(LOGS_DIRECTORY)) mkdirp.sync(LOGS_DIRECTORY);
 module.exports = {
   port: process.env.PORT || 3000,
   locales: {
-    US: {
+    JO: {
       siteId: 1,
-      countryAbbrName: 'US',
+      countryAbbrName: 'JO',
       countryId: 1000,
-      currencyCode: 'USD',
-      market: 'en-US',
-      timeZone: 'America/New_York',
+      currencyCode: 'JOD',
+      market: 'en-JO',
+      timeZone: 'Jordan/Amman',
     },
   },
   loggerOptions: {
