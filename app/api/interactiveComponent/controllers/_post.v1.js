@@ -18,7 +18,7 @@ class ClientInfoController extends ControllerBase {
 		// retur the response, no need to wait for submittion actions
 		res.send('');
 
-		return dialogsActions.giveStars('#test', body.user, body.submission, req)
+		return dialogsActions.giveStars('#rating', body.user, body.submission, req)
 			.then(() => { return null; })
 			.catch((err) => res.sendStatus(500));
 	}
