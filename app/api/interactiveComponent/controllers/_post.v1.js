@@ -1,14 +1,26 @@
 const ControllerBase = require('./../../../framework/controller/controllerBase');
+const dialog = require('./../../dialogs/controllers/_post.v1');
 const schema = require('./../schema/dialogSubmission');
-const dialogsActions = require('./../repository/dialogsActions');
+const actions = require('./../repository/actions');
+const slackDialog = require('./../../dialogs/models/SlackDialog');
+const slackMethod = require('./../../dialogs/repository/slackMethods');
+const Errors = require('./../../../framework/errors');
 
-class ClientInfoController extends ControllerBase {
+class InteractiveComponent extends ControllerBase {
 	static get schema() {
 		return schema;
 	}
 
+	static validate(req) {
+		const body = JSON.parse(req.body.payload);
+		if (body.token !== AppConfigs.verificationToken) {
+			throw new Errors.MISSING_TOKEN();
+		}
+		return true;
+	}
+
 	static get name() {
-		return 'DialogSubmission';
+		return 'InteractiveComponent';
 	}
 
 	static processRequest(req, res) {
@@ -17,12 +29,21 @@ class ClientInfoController extends ControllerBase {
 
 		// retur the response, no need to wait for submittion actions
 		res.send('');
+		if (body.callback_id === 'give-a-star') {
+			return actions.giveStars('#test', body.user, body.submission, req)
+				.then(() => { return null; })
+				.catch((err) => res.sendStatus(500));
+		} else if (body.callback_id === 'give-a-star-button' && body.actions[0].value === 'give-a-star') {
+			// build dialog variables
+			const dialog = slackDialog.buildGiveAStarDialog(AppConfigs.oAuthAccessToken, body.trigger_id, null);
 
-		return dialogsActions.giveStars('#rating', body.user, body.submission, req)
-			.then(() => { return null; })
-			.catch((err) => res.sendStatus(500));
+			// open dialog on slack
+			return slackMethod.openDialog(dialog, req)
+				.then(() => { return null; })
+				.catch((err) => res.sendStatus(500));
+		}
 	}
 }
 
-module.exports.controller = (req, res) => ClientInfoController.execute(req, res);
+module.exports.controller = (req, res) => InteractiveComponent.execute(req, res);
 module.exports.route = '/interactive-component';

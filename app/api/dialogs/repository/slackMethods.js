@@ -11,7 +11,6 @@ const qs = require('querystring');
 module.exports.openDialog = (dialog, { locale, id }) => {
 	const method = 'dialogs::slackMethods::openDialog';
 	Logger.info(method, 'open dialog on slack', locale, id);
-	dialog.dialog = JSON.stringify(dialog.dialog);
 	return axios.post('https://slack.com/api/dialog.open', qs.stringify(dialog));
 };
 
