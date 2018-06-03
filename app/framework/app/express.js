@@ -14,6 +14,7 @@ const customValidators = require('../../framework/validation/customValidators');
 const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const routeGen = require('@aspirejo/express-route-generator');
+const sequalizer = require('../dataAccess/sequalizer');
 // const docGen = require('@aspirejo/swagger-generator-express');
 // const docConfig = require('./../../../configuration/documentation');
 
@@ -128,6 +129,9 @@ module.exports.init = () => {
 
   // Initialize error routes
   initErrorRoutes(app);
+
+  // initial DB  
+  sequalizer.init();
 
   return app;
 };

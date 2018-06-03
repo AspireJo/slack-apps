@@ -30,7 +30,10 @@
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.16",
     "morgan": "^1.9.0",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
     "querystring": "^0.2.0",
+    "sequelize": "^4.37.10",
     "swagger-ui-express": "^3.0.8",
     "winston": "^2.4.2"
   },
