@@ -1,9 +1,14 @@
 const Sequelize = require('sequelize');
 
-const stars = require('../Model/stars');
+const sequelizeInstance;
+const Instance = () => {
+  if (!sequelizeInstance) {
+    sequelizeInstance = CreateInstance();
+  }
+  return sequelizeInstance;
+}
 
-let sequelize;
-const createInstance = () => {
+const CreateInstance = () => {
   return new Sequelize(AppConfigs.sequalizer.database, AppConfigs.sequalizer.username, AppConfigs.sequalizer.password, {
     host: AppConfigs.sequalizer.host,
     port: AppConfigs.sequalizer.port,
@@ -15,34 +20,27 @@ const createInstance = () => {
       acquire: AppConfigs.sequalizer.pool.acquire,
       idle: AppConfigs.sequalizer.pool.idle
     }
-
   });
 }
 
-const init = () => {
-  if (!sequelize) {
-    sequelize = createInstance();
-  }
-  const starsInstance = sequelize.define('stars', stars);
-  sequelize.sync();
-  starsInstance.create({
-    type: '{ type: Sequelize.STRING, allowNull: false }',
-    token: '{ type: Sequelize.STRING, allowNull: false }',
-    action: '{ type: Sequelize.STRING, allowNull: false }',
-    team_id: '{ type: Sequelize.STRING, allowNull: true }',
-    team_domain: '{ type: Sequelize.STRING, allowNull: true }',
-    action_user_id: '{ type: Sequelize.STRING, allowNull: false }',
-    action_user_name: '{ type: Sequelize.STRING, allowNull: false }',
-    channel_id: '{ type: Sequelize.STRING, allowNull: true }',
-    channel_name: '{ type: Sequelize.STRING, allowNull: true }',
-    receiver_id: '{ type: Sequelize.STRING, allowNull: false }',
-    stars_count: 5,
-    description: '{ type: Sequelize.STRING, allowNull: true }',
-    show_me: false,
-    callback_id: '{ type: Sequelize.STRING, allowNull: true }'
+const Sync = (tableName, TableInstance) => {
+  tableInstance = Instance.define(tableName, TableInstance);
+  tableInstance.sync();
+}
+
+const Add = (obj) => {
+  tableInstance = Instance.define(tableName, TableInstance);
+// you can also build, save and access the object with chaining:
+tableInstance
+  .build(obj)
+  .save()
+  .then(() => {
+    // you can now access the currently saved task with the variable anotherTask... nice!
+  })
+  .catch(error => {
+    // Ooops, do some error-handling
   })
 }
 
-const execute = () => { }
+module.exports = {Sync, Add};
 
-module.exports = { init, execute };
