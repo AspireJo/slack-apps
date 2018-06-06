@@ -5,6 +5,7 @@ const actions = require('./../repository/actions');
 const slackDialog = require('./../../dialogs/models/SlackDialog');
 const slackMethod = require('./../../dialogs/repository/slackMethods');
 const Errors = require('./../../../framework/errors');
+const Star = require('./../../../framework/Model/Star');
 
 class InteractiveComponent extends ControllerBase {
 	static get schema() {
@@ -30,8 +31,10 @@ class InteractiveComponent extends ControllerBase {
 		// retur the response, no need to wait for submittion actions
 		res.send('');
 		if (body.callback_id === 'give-a-star') {
-			return actions.giveStars('#test', body.user, body.submission, req)
-				.then(() => { return null; })
+			return actions.giveStars(AppConfigs.tragetedChannel, body.user, body.submission, req)
+				.then(() => {
+					Star.Add(AppConfigs.tragetedChannel, body, req);
+				})
 				.catch((err) => res.sendStatus(500));
 		} else if (body.callback_id === 'give-a-star-button' && body.actions[0].value === 'give-a-star') {
 			// build dialog variables

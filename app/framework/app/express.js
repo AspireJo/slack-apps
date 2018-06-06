@@ -131,7 +131,7 @@ module.exports.init = () => {
   initErrorRoutes(app);
 
   // initial DB  
-  sequalizer.init();
+  sequalizer.InitSequelize();
 
   return app;
 };

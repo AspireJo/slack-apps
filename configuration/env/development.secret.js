@@ -13,7 +13,7 @@ module.exports = {
     host: 'localhost',
     database: 'aspire-slack',
     username: 'postgres',
-    password: 'admin',
+    password: 'postgres',
     port: 5432,
     pool: {
       max: 5,
