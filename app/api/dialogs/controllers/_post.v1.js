@@ -23,18 +23,48 @@ class StarsDialog extends ControllerBase {
 			Star.CountOfGivenStarsInThisMonth(req.body, req)
 		])
 			.then((result) => {
-				// build dialog variables
-				const dialog = slackDialog.buildGiveAStarDialog(AppConfigs.oAuthAccessToken, trigger_id, result[0], result[1]);
+				if (result[1] < AppConfigs.maxNumberOfStarsPerMonth) {
+					// build dialog variables
+					const dialog = slackDialog.buildGiveAStarDialog(AppConfigs.oAuthAccessToken, trigger_id, result[0], result[1]);
 
-				// open dialog on slack
-				return slackMethod.openDialog(dialog, req)
-					.then((result) => {
-						res.send('');
-					})
-					.catch((err) =>
-						res.sendStatus(500));
+					// open dialog on slack
+					return slackMethod.openDialog(dialog, req)
+						.then((result) => {
+							res.send('');
+						})
+						.catch((err) =>
+							res.sendStatus(500));
+				} else {
+					// send a slack bot message
+					const message = this.getNoRemaingStarsMessage(req.body.user_id, req.body.channel_id, '');
+					return slackMethod.sendSlackBotMessage(message, req)
+						.then((result) => {
+							res.send('');
+						})
+						.catch((err) =>
+							res.sendStatus(500));
+				}
 			}).catch((err) =>
 				res.sendStatus(500));
+	}
+
+	static getNoRemaingStarsMessage(userId, channel, text) {
+		const messageBody = {
+			token: AppConfigs.oAuthAccessToken,
+			channel,
+			text: `:wave: <@${userId}>,`,
+			attachments: [
+				{
+					text: ' you done have more stars to give to your colegues..',
+					callback_id: 'give-a-star-button',
+					color: 'warning',
+					attachment_type: 'default',
+				}
+			]
+		};
+
+		messageBody.attachments = JSON.stringify(messageBody.attachments);
+		return messageBody;
 	}
 }
 

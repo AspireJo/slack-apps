@@ -2,7 +2,6 @@ const Dialog = require('./Dialog');
 const Element = require('./Element');
 const SelectElement = require('./SelectElement');
 const Option = require('./Option');
-const MaxNumberOfStars = AppConfigs.maxNumberOfStarsPerMonth
 class SlackDialog {
   constructor(token, trigger_id) {
     this.token = token;
@@ -21,7 +20,7 @@ class SlackDialog {
     const noOfStarsElements = SelectElement.Instance('noOfStars', 'How many star?', null, 1, false, 'How many star would you like to give?');
     let i;
     let j;
-    for (i = 1; i <= MaxNumberOfStars - remainingStars; i++) {
+    for (i = 1; i <= AppConfigs.maxNumberOfStarsPerMonth - remainingStars; i++) {
       let starIcons = '';
       for (j = 1; j <= i; j++) {
         starIcons += ':star2:';

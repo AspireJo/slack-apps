@@ -36,3 +36,19 @@ module.exports.getTargetedUser = (token, channel_id, channel_name, { locale, id 
 		}
 	});
 };
+
+/*  handleDirectMessage
+*   Call a post api from slack to postMessage for user
+*   Param userId
+*	  Param channelId
+*   Param locale(string), defines the locale shortname, exists in the request. ex: JO
+*   Param id(number), reuqest id. generated in the request.
+*   Output: promise of of calling slack api
+*/
+module.exports.sendSlackBotMessage = (messageBody, { locale, id }) => {
+  const method = 'dialog::slackMethods::sendSlackBotMessage';
+  Logger.info(method, 'send message to slack', locale, id);
+  
+
+  return axios.post('https://slack.com/api/chat.postMessage', qs.stringify(messageBody));
+};
