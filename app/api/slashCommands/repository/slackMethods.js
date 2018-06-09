@@ -23,12 +23,12 @@ module.exports.openDialog = (dialog, { locale, id }) => {
 *   Param id(number), reuqest id. generated in the request.
 *   Output: promise of of calling slack api with the username, if it is not a directmessage the function returns empty string
 */
-module.exports.getTargetedUser = (token, channel_id, channel_name, { locale, id }) => {
+module.exports.getTargetedUser = (token, { body, locale, id }) => {
 	const method = 'dialogs::slackMethods::getTargetedUser';
-	Logger.info(method, 'get targeted user from conversations info', channel_id, channel_name, locale, id);
+	Logger.info(method, 'get targeted user from conversations info', body.channel_id, body.channel_name, locale, id);
 	return new Promise(function (resolve, reject) {
-		if (channel_name === 'directmessage') {
-			axios.get(`https://slack.com/api/conversations.info?token=${token}&channel=${channel_id}&pretty=1`)
+		if (body.channel_name === 'directmessage') {
+			axios.get(`https://slack.com/api/conversations.info?token=${token}&channel=${body.channel_id}&pretty=1`)
 				.then((result) => resolve(result.data.channel.user))
 				.catch((err) => reject(err));
 		} else {
@@ -46,9 +46,9 @@ module.exports.getTargetedUser = (token, channel_id, channel_name, { locale, id 
 *   Output: promise of of calling slack api
 */
 module.exports.sendSlackBotMessage = (messageBody, { locale, id }) => {
-  const method = 'dialog::slackMethods::sendSlackBotMessage';
-  Logger.info(method, 'send message to slack', locale, id);
-  
+	const method = 'dialog::slackMethods::sendSlackBotMessage';
+	Logger.info(method, 'send message to slack', locale, id);
 
-  return axios.post('https://slack.com/api/chat.postMessage', qs.stringify(messageBody));
+
+	return axios.post('https://slack.com/api/chat.postMessage', qs.stringify(messageBody));
 };

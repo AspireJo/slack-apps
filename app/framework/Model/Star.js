@@ -29,7 +29,7 @@ class Star extends Sequalizer {
         super.sync(tableInstance);
     }
 
-    static Add(channel, body, { locale, id }) {
+    static Add(channel, { body, locale, id }) {
         const star = new Star();
         const tableInstance = super.define(tableName, star);
         star.identifier = undefined;
@@ -48,16 +48,10 @@ class Star extends Sequalizer {
         star.show_me = (body.submission.showMe === 'Y');
         star.callback_id = body.callback_id;
         star.target_channel = channel;
-        tableInstance.create(star)
-            .then(savedRecord => {
-                console.log(savedRecord.get('identifier'));
-            }).catch(err => {
-                console.log(err);
-            });
-        ;
+        return tableInstance.create(star);
     }
 
-    static CountOfGivenStarsInThisMonth(body, { locale, id }) {
+    static CountOfGivenStarsInThisMonth({ body, locale, id }) {
         const star = new Star();
         const tableInstance = super.define(tableName, star);
         const date = new Date();
@@ -75,15 +69,84 @@ class Star extends Sequalizer {
                     }
                 ]
             }
-        })
-            .then(result => {
-                console.log(Number(result[0].dataValues.count));
-                return Number(result[0].dataValues.count);
-            }).catch(err => {
-                console.log(err);
-                throw (err);
-            });
+        });
     }
 
+    static CountOfGainStarsInThisMonth({ body, locale, id }) {
+        const star = new Star();
+        const tableInstance = super.define(tableName, star);
+        const date = new Date();
+        return tableInstance.findAll({
+            attributes: [[Sequelize.fn('SUM', Sequelize.col('stars_count')), 'count']],
+            where: {
+                [Sequelize.Op.and]: [
+                    { receiver_id: body.user_id },
+                    { team_id: body.team_id },
+                    {
+                        createdAt: {
+                            [Sequelize.Op.gt]: new Date(date.getFullYear(), date.getMonth(), 1),
+                            [Sequelize.Op.lt]: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+                        }
+                    }
+                ]
+            }
+        });
+    }
+
+    static GetGivenStarsInThisMonthByUser({ body, locale, id }) {
+        const star = new Star();
+        const tableInstance = super.define(tableName, star);
+        const date = new Date();
+        return tableInstance.findAll({
+            attributes: [
+                'receiver_id',
+                'stars_count',
+                'description',
+                'show_me',
+                'createdAt'
+
+            ],
+            where: {
+                [Sequelize.Op.and]: [
+                    { action_user_id: body.user_id },
+                    { team_id: body.team_id },
+                    {
+                        createdAt: {
+                            [Sequelize.Op.gt]: new Date(date.getFullYear(), date.getMonth(), 1),
+                            [Sequelize.Op.lt]: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+                        }
+                    }
+                ]
+            }
+        });
+    }
+
+    static GetGainStarsInThisMonthByUser({ body, locale, id }) {
+        const star = new Star();
+        const tableInstance = super.define(tableName, star);
+        const date = new Date();
+        return tableInstance.findAll({
+            attributes: [
+                'action_user_id',
+                'stars_count',
+                'description',
+                'show_me',
+                'createdAt'
+
+            ],
+            where: {
+                [Sequelize.Op.and]: [
+                    { receiver_id: body.user_id },
+                    { team_id: body.team_id },
+                    {
+                        createdAt: {
+                            [Sequelize.Op.gt]: new Date(date.getFullYear(), date.getMonth(), 1),
+                            [Sequelize.Op.lt]: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+                        }
+                    }
+                ]
+            }
+        });
+    }
 }
 module.exports = Star;

@@ -21,11 +21,11 @@ module.exports = {
         hint: 'How many star would you like to give?',
         value: '1',
         options: [
-          { label: ':star2:', value: '1' },
-          { label: ':star2: :star2:', value: '2' },
-          { label: ':star2: :star2: :star2:', value: '3' },
-          { label: ':star2: :star2: :star2: :star2:', value: '4' },
-          { label: ':star2: :star2: :star2: :star2: :star2:', value: '5' },
+          { label: AppConfigs.starIcon, value: '1' },
+          { label: `${AppConfigs.starIcon} ${AppConfigs.starIcon}`, value: '2' },
+          { label: `${AppConfigs.starIcon} ${AppConfigs.starIcon} ${AppConfigs.starIcon}`, value: '3' },
+          { label: `${AppConfigs.starIcon} ${AppConfigs.starIcon} ${AppConfigs.starIcon} ${AppConfigs.starIcon}`, value: '4' },
+          { label: `${AppConfigs.starIcon} ${AppConfigs.starIcon} ${AppConfigs.starIcon} ${AppConfigs.starIcon} ${AppConfigs.starIcon}`, value: '5' },
         ],
       },
       {

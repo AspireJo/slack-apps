@@ -23,15 +23,10 @@ class SlackDialog {
     for (i = 1; i <= AppConfigs.maxNumberOfStarsPerMonth - remainingStars; i++) {
       let starIcons = '';
       for (j = 1; j <= i; j++) {
-        starIcons += ':star2:';
+        starIcons += AppConfigs.starIcon;
       }
       noOfStarsElements.options.push(Option.Instance(starIcons, i.toString()));
     }
-    /*noOfStarsElements.options.push(Option.Instance(':star2:', '1'));
-    noOfStarsElements.options.push(Option.Instance(':star2::star2:', '2'));
-    noOfStarsElements.options.push(Option.Instance(':star2::star2::star2:', '3'));
-    noOfStarsElements.options.push(Option.Instance(':star2::star2::star2::star2:', '4'));
-    noOfStarsElements.options.push(Option.Instance(':star2::star2::star2::star2::star2:', '5'));*/
     dialog.elements.push(noOfStarsElements);
 
     const descriptionElements = Element.Instance('textarea', 'description', 'Why?', null, true, 'Why would you like to give him/her star(s)?');

@@ -4,5 +4,6 @@ module.exports = {
 	botToken: 'xoxb-363603873302-365443179825-tg72ouRp4GsLD4tBZ2vhftoh',
 	webhookUrl: 'https://hooks.slack.com/services/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',
 	tragetedChannel: '#test',
-	maxNumberOfStarsPerMonth: 5
+	maxNumberOfStarsPerMonth: 5,
+	starIcon: ':star2:'
 };
