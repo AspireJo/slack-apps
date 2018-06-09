@@ -148,5 +148,31 @@ class Star extends Sequalizer {
             }
         });
     }
+
+    static GetNomineesForThisMonth(teamId, { locale, id }) {
+        const star = new Star();
+        const tableInstance = super.define(tableName, star);
+        const date = new Date();
+        return tableInstance.findAll({
+            attributes: [
+                'receiver_id',
+                [Sequelize.fn('SUM', Sequelize.col('stars_count')), 'count'],
+            ],
+            where: {
+                [Sequelize.Op.and]: [
+                    { team_id: teamId },
+                    {
+                        createdAt: {
+                            [Sequelize.Op.gt]: new Date(date.getFullYear(), date.getMonth(), 1),
+                            [Sequelize.Op.lt]: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+                        }
+                    }
+                ]
+            }, limit: AppConfigs.nomineesCount,
+            order: [[Sequelize.fn('SUM', Sequelize.col('stars_count')), 'DESC']],
+            group: 'receiver_id'
+        });
+    }
+
 }
 module.exports = Star;
