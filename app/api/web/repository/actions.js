@@ -22,7 +22,7 @@ module.exports.GetNomineesInfo = (teamId, { locale, id }) => {
 		});
 };
 
-module.exports.GetUserProfile = (nominees, { locale, id }) => {
+module.exports.GetNomineeProfile = (nominees, { locale, id }) => {
 	const method = 'web::actions::GetUserProfile';
 	//Logger.info(method, 'get user profile from slack', locale, id);
 	const promises = [];
@@ -42,6 +42,32 @@ module.exports.GetUserProfile = (nominees, { locale, id }) => {
 		});
 };
 
+module.exports.getSenderProfiles = (senders, { locale, id }) => {
+	const method = 'web::actions::GetUserProfile';
+	const promises = [];
+	let allMessages = [];
+	senders.forEach(sender => {
+		sender.forEach(message => {
+			allMessages.push(message);
+		});
+	});
+	const uniqSenders = _.uniqBy(_.filter(allMessages, ['show_me', true]), 'action_user_id');
+
+	uniqSenders.forEach(sender => {
+		promises.push(new Promise(function (resolve, reject) {
+			slackMethod.getUserProfile(sender.action_user_id, { locale, id })
+				.then((result) => resolve(result))
+				.catch((err) => reject(err));
+		}));
+	});
+	return Promise.all(promises)
+		.then((result) => {
+			return _.map(result, 'data.profile');
+		}).catch((err) => {
+			throw err;
+		});
+};
+
 module.exports.getGainStarsInThisMonthByUser = (teamId, nominees, { locale, id }) => {
 	const method = 'web::actions::getGainStarsInThisMonthByUser';
 	//Logger.info(method, 'get gain stars from DB', locale, id);
@@ -50,7 +76,10 @@ module.exports.getGainStarsInThisMonthByUser = (teamId, nominees, { locale, id }
 	nominees.forEach(nominee => {
 		promises.push(new Promise(function (resolve, reject) {
 			dbMethod.getGainStarsInThisMonthByUser({ team_id: teamId, user_id: nominee.receiver_id }, { locale, id })
-				.then((result) => resolve(_.map(result, 'dataValues')))
+				.then((result) => {
+					return _.map(result, 'dataValues');
+				})
+				.then(result => resolve(result))
 				.catch((err) => reject(err));
 
 		}));

@@ -1,28 +1,8 @@
-class Nominee  {
-  constructor() {
+const userProfile = require('./userProfile');
 
-    this.title = undefined;
-    this.phone = undefined;
-    this.skype = undefined;
-    this.real_name = undefined;
-    this.real_name_normalized = undefined;
-    this.display_name = undefined;
-    this.display_name_normalized = undefined;
-    this.fields = undefined;
-    this.status_text = undefined;
-    this.status_emoji = undefined;
-    this.status_expiration = undefined;
-    this.avatar_hash = undefined;
-    this.email = undefined;
-    this.image_24 = undefined;
-    this.image_32 = undefined;
-    this.image_48 = undefined;
-    this.image_72 = undefined;
-    this.image_192 = undefined;
-    this.image_512 = undefined;
-    this.image = undefined;
-    this.status_text_canonical = undefined;
-    
+class Nominee extends userProfile  {
+  constructor() {
+    super();    
     this.totalStars = undefined;
     this.starsList = undefined;
   }
