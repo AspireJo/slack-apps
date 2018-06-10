@@ -13,8 +13,10 @@ module.exports.getUserProfile = (userId, { locale, id }) => {
 	//Logger.info(method, 'get user profile from slack', userId, locale, id);
 
 	return axios.get(`https://slack.com/api/users.profile.get?token=${AppConfigs.oAuthAccessToken}&user=${userId}&pretty=1`)
-	.then(result => {
-		result.data.profile.user_id = userId;
-		return result;
-	});
+		.then(result => {
+			if (result.data && result.data.profile) {
+				result.data.profile.user_id = userId;
+			}
+			return result;
+		});
 };

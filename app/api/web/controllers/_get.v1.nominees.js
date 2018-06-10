@@ -29,7 +29,7 @@ class Nominees extends ControllerBase {
 							.then(senderProfiles => {
 								allResult[1].forEach(sender => {
 									sender.forEach(message => {
-										if(message.show_me === true){
+										if(senderProfiles && message.show_me === true){
 											message.profile = UserProfile.SenderInstance(_.find(senderProfiles, { 'user_id' : message.action_user_id }));
 										}
 										delete message.action_user_id;

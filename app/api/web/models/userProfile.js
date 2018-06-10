@@ -1,4 +1,4 @@
-class UserProfile  {
+class UserProfile {
   constructor() {
 
     this.title = undefined;
@@ -29,14 +29,16 @@ class UserProfile  {
     userProfile.display_name = slackObject.display_name;
     userProfile.status_text = slackObject.status_text;
     userProfile.status_emoji = slackObject.status_emoji;
-    userProfile.image = slackObject.image_512 || slackObject.image_192 || slackObject.image_72 || slackObject.image_48 || slackObject.image_32 || slackObject.image_24;    
+    userProfile.image = slackObject.image_512 || slackObject.image_192 || slackObject.image_72 || slackObject.image_48 || slackObject.image_32 || slackObject.image_24;
     return userProfile;
   }
 
   static SenderInstance(slackObject) {
     const userProfile = new UserProfile();
-    userProfile.display_name = slackObject.display_name;
-    userProfile.image = slackObject.image_512 || slackObject.image_192 || slackObject.image_72 || slackObject.image_48 || slackObject.image_32 || slackObject.image_24;    
+    if (slackObject) {
+      userProfile.display_name = slackObject.display_name;
+      userProfile.image = slackObject.image_512 || slackObject.image_192 || slackObject.image_72 || slackObject.image_48 || slackObject.image_32 || slackObject.image_24;
+    }
     return userProfile;
   }
 };
