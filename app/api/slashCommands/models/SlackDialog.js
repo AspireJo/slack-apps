@@ -32,7 +32,7 @@ class SlackDialog {
     const descriptionElements = Element.Instance('textarea', 'description', 'Why?', null, true, 'Why would you like to give him/her star(s)?');
     dialog.elements.push(descriptionElements);
 
-    const showMeElements = SelectElement.Instance('showMe', 'Why?', null, 'N', false, 'Why would you like to give him/her star(s)?');
+    const showMeElements = SelectElement.Instance('showMe', 'Show your Name?', null, 'N', false, 'Would you like to your name beside your stars?');
     showMeElements.options.push(Option.Instance(':heavy_check_mark: Yes', 'Y'));
     showMeElements.options.push(Option.Instance(':x: No', 'N'));
     dialog.elements.push(showMeElements);

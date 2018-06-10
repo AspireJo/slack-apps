@@ -36,8 +36,8 @@ class UserProfile {
   static SenderInstance(slackObject) {
     const userProfile = new UserProfile();
     if (slackObject) {
-      userProfile.display_name = slackObject.display_name;
-      userProfile.image = slackObject.image_512 || slackObject.image_192 || slackObject.image_72 || slackObject.image_48 || slackObject.image_32 || slackObject.image_24;
+      userProfile.display_name = slackObject.display_name || slackObject.real_name;
+      userProfile.image = slackObject.image_48;
     }
     return userProfile;
   }

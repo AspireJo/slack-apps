@@ -1,19 +1,39 @@
-<app-loader [busy]="isLoading" message="loading...">
-  <div class="col-12">
-    <div class="col-12" *ngFor="let nomineeData of nomineesData">
-      <img width="100" alt="{{nomineeData.display_name}}" src="{{nomineeData.image}}" />
-      <label>{{nomineeData.display_name}}</label>
-      <div class="col-12" *ngFor="let starsList of nomineeData.starsList">
-        <div class="col-3">
-          <img *ngIf="starsList.show_me" width="50" alt="{{starsList.profile.display_name}}" src="{{starsList.profile.image}}" />
-          <img *ngIf="!starsList.show_me" width="50" alt="unkown" src="/assets/images/unkown.png" />
+<!--app-loader [busy]="isLoading" message="loading..."-->
+<div class="container-fluid">
+  <div class="col-3 m-5 float-left border border-secondary row-eq-height" *ngFor="let nomineeData of nomineesData">
+    <div class="col-12 mt-3 mb-5 float-left border-bottom border-secondary ">
+      <img width="100" height="100" class="rounded-circle mx-auto d-block" alt="{{nomineeData.display_name}}" src="{{nomineeData.image}}"
+      />
+      <h3 class="text-center text-primary">{{nomineeData.display_name}}</h3>
+      <p class="text-center text-primary" *ngIf="nomineeData.totalStars == 1">{{nomineeData.totalStars}} star</p>
+      <p class="text-center text-primary" *ngIf="nomineeData.totalStars > 1">{{nomineeData.totalStars}} stars</p>
+    </div>
+    <div class="col-12 float-left" *ngFor="let starsList of nomineeData.starsList">
+      <div class="col-2 float-left mr-3">
+        <img width="50" height="50" class="rounded-circle float-left" *ngIf="starsList.show_me" alt="{{starsList.profile.display_name}}"
+          src="{{starsList.profile.image}}" />
+        <img width="50" height="50" class="rounded-circle float-left" *ngIf="!starsList.show_me" alt="unkown" src="/assets/images/unkown.png"
+        />
+      </div>
+      <div class=" col-9 float-left">
+        <div class="col-12 float-left rounded bg-secondary pt-2 pb-2">
+          <div class="col-12 float-left">
+            <h6 class=" float-left text-primary font-weight-bold " *ngIf="starsList.show_me ">{{starsList.profile.display_name}}</h6>
+            <h6 class="float-left text-primary font-weight-bold " *ngIf="!starsList.show_me ">Unkown</h6>
+          </div>
+          <div class="col-12 float-left m-0">
+            <h4 class="float-left text-warning font-weight-bold " *ngFor="let index of [1,2,3,4,5]">
+              <p *ngIf="index <= starsList.stars_count">&#9733;</p>
+              <p *ngIf="index > starsList.stars_count ">&#9734;</p>
+            </h4>
+          </div>
+          <small class="col-12 float-left ">{{starsList.description}}</small>
         </div>
-        <div class="col-9">
-          <label class="col-12" *ngIf="starsList.show_me">{{starsList.profile.display_name}}: {{starsList.stars_count}} star(s) on {{starsList.createdAt}}</label>
-          <label class="col-12" *ngIf="!starsList.show_me">Someone: {{starsList.stars_count}} star(s) on {{starsList.createdAt}}</label>
-          <label class="col-12">{{starsList.description}}</label>
-        </div>
+        <p>
+          <small class="text-primary text-right ">{{starsList.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}</small>
+        </p>
       </div>
     </div>
   </div>
-</app-loader>
+</div>
+<!--/app-loader-->
