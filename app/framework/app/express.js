@@ -65,6 +65,11 @@ function initHelmetHeaders(app) {
   app.use((req, res, next) => { // add custom private cache-control header
     const headerValue = res.getHeader('Cache-Control');
     res.setHeader('Cache-Control', `private, ${headerValue}`);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Request-Headers', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   });
   app.use(helmet.xssFilter());

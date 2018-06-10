@@ -1,0 +1,19 @@
+<app-loader [busy]="isLoading" message="loading...">
+  <div class="col-12">
+    <div class="col-12" *ngFor="let nomineeData of nomineesData">
+      <img width="100" alt="{{nomineeData.display_name}}" src="{{nomineeData.image}}" />
+      <label>{{nomineeData.display_name}}</label>
+      <div class="col-12" *ngFor="let starsList of nomineeData.starsList">
+        <div class="col-3">
+          <img *ngIf="starsList.show_me" width="50" alt="{{starsList.profile.display_name}}" src="{{starsList.profile.image}}" />
+          <img *ngIf="!starsList.show_me" width="50" alt="unkown" src="/assets/images/unkown.png" />
+        </div>
+        <div class="col-9">
+          <label class="col-12" *ngIf="starsList.show_me">{{starsList.profile.display_name}}: {{starsList.stars_count}} star(s) on {{starsList.createdAt}}</label>
+          <label class="col-12" *ngIf="!starsList.show_me">Someone: {{starsList.stars_count}} star(s) on {{starsList.createdAt}}</label>
+          <label class="col-12">{{starsList.description}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-loader>
