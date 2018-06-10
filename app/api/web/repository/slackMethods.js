@@ -12,5 +12,9 @@ module.exports.getUserProfile = (userId, { locale, id }) => {
 	const method = 'web::slackMethods::getUserProfile';
 	//Logger.info(method, 'get user profile from slack', userId, locale, id);
 
-	return axios.get(`https://slack.com/api/users.profile.get?token=${AppConfigs.oAuthAccessToken}&user=${userId}&pretty=1`);
+	return axios.get(`https://slack.com/api/users.profile.get?token=${AppConfigs.oAuthAccessToken}&user=${userId}&pretty=1`)
+	.then(result => {
+		result.data.profile.user_id = userId;
+		return result;
+	});
 };
